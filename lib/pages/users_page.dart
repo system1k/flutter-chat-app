@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:chat_app/models/user.dart';
+import 'package:chat_app/services/auth_services.dart';
 
 class UsersPage extends StatefulWidget {
   const UsersPage({Key? key}) : super(key: key);
@@ -14,22 +16,29 @@ class _UsersPageState extends State<UsersPage> {
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
   
   final List users = [
-    User(uid: 1, name: 'Delving', email: 'test1@test.com', online: true),
-    User(uid: 2, name: 'Berling', email: 'test2@test.com', online: false),
-    User(uid: 3, name: 'Kerling', email: 'test3@test.com', online: true)
+    Usuario(uid: '1', nombre: 'Delving', email: 'test1@test.com', online: true),
+    Usuario(uid: '2', nombre: 'Berling', email: 'test2@test.com', online: false),
+    Usuario(uid: '3', nombre: 'Kerling', email: 'test3@test.com', online: true)
   ]; 
   
   @override
   Widget build(BuildContext context) {
+
+    final authServices = Provider.of<AuthServices>(context);
+    final user = authServices.usuario;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Mí nombre', style: TextStyle(color: Colors.black87)),
+        title: Text(user.nombre, style: const TextStyle(color: Colors.black87)),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.exit_to_app, color: Colors.black87),
-          onPressed: (){},
+          onPressed: (){
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthServices.deleteToken();
+          },
         ),
         actions: [
           Container(
@@ -76,17 +85,17 @@ class _UsersListView extends StatelessWidget {
 
 class _UsersListTile extends StatelessWidget {
   
-  final User users;  
+  final Usuario users;  
   const _UsersListTile(this.users);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(users.name),
+      title: Text(users.nombre),
       subtitle: Text(users.email),
       leading: CircleAvatar(
         backgroundColor: Colors.blue[100],
-        child: Text(users.name.substring(0,2))
+        child: Text(users.nombre.substring(0,2))
       ),
       trailing: Container(
         height: 10,

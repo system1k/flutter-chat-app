@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:chat_app/widgets/widgets.dart';
+import 'package:chat_app/helpers/mostar_alerta.dart';
+import 'package:chat_app/services/auth_services.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -49,6 +53,17 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthServices>(context);
+
+    void _verificacion(bool value) {
+      if (value) {
+        Navigator.pushReplacementNamed(context, 'users');
+      } else {
+        mostarAlerta(context, 'Login incorrecto', 'Revise sus credenciales de acceso');
+      }
+    }
+
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -71,7 +86,15 @@ class __FormState extends State<_Form> {
 
           BlueButton(
             text: 'Ingresar', 
-            onPressed: (){}
+            onPressed: authService.authenticating 
+              ? () => null 
+              : () async {
+                  FocusScope.of(context).unfocus();
+                  final loginOk = await authService.login(emailCtrl.text.trim(), passCtrl.text.trim());
+
+                  _verificacion(loginOk);
+
+                }
           )
 
         ],
