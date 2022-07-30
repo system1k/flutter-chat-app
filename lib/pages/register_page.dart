@@ -63,7 +63,7 @@ class __FormState extends State<_Form> {
       if (value == true) {
         Navigator.pushReplacementNamed(context, 'users');
       } else {
-        mostarAlerta(context, 'Registro incorrecto', value);      
+        mostarAlerta(context, 'Registro incorrecto', value ?? '');      
       }
     }
 

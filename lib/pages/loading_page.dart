@@ -11,8 +11,10 @@ class LoadingPage extends StatelessWidget {
     return FutureBuilder(
       future: checkLoginState(context),
       builder: (context, snapshot) {
-        return const Center(
-          child: Text('Espere...') 
+        return const Scaffold(
+          body: Center(
+            child: Text('Espere...') 
+          )
         );
       }
     );
@@ -24,13 +26,15 @@ class LoadingPage extends StatelessWidget {
     final authenticated = await authService.isLoggedIn();
 
      if(authenticated) {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(context, PageRouteBuilder(
-        pageBuilder: (_, __, ___) => UsersPage(),
+        pageBuilder: (_, __, ___) => const UsersPage(),
         transitionDuration: const Duration(milliseconds: 0)
       ));
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(context, PageRouteBuilder(
-        pageBuilder: (_, __, ___) => LoginPage(),
+        pageBuilder: (_, __, ___) => const LoginPage(),
         transitionDuration: const Duration(milliseconds: 0)
       ));
     }

@@ -30,7 +30,7 @@ class _UsersPageState extends State<UsersPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(user.nombre, style: const TextStyle(color: Colors.black87)),
+        title: Text(user!.nombre, style: const TextStyle(color: Colors.black87)),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(

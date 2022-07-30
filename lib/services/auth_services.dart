@@ -9,7 +9,7 @@ import 'package:chat_app/models/login_response.dart';
 
 class AuthServices with ChangeNotifier {
 
-  late Usuario usuario;
+  late Usuario? usuario;
   bool _authenticating = false;
   final _storage = const FlutterSecureStorage();
 
@@ -95,7 +95,7 @@ class AuthServices with ChangeNotifier {
 
   Future<bool> isLoggedIn() async {
 
-    final token = await _storage.read(key: 'token');
+    final token = await _storage.read(key: 'token') ?? '';
 
     final url = Uri.parse('${Environment.apiURL}/login/renew');
 
@@ -103,7 +103,7 @@ class AuthServices with ChangeNotifier {
       url,
       headers: { 
         'Content-Type' : 'application/json',
-        'x-token' : token! 
+        'x-token' : token
       }
     ); 
    
