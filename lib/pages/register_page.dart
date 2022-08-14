@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:chat_app/widgets/widgets.dart';
-import 'package:chat_app/services/auth_services.dart';
 import 'package:chat_app/helpers/mostar_alerta.dart';
+
+import 'package:chat_app/services/socket_services.dart';
+import 'package:chat_app/services/auth_services.dart';
 
 
 
@@ -58,14 +60,7 @@ class __FormState extends State<_Form> {
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthServices>(context);
-
-    void _verificacion(dynamic value) {
-      if (value == true) {
-        Navigator.pushReplacementNamed(context, 'users');
-      } else {
-        mostarAlerta(context, 'Registro incorrecto', value ?? '');      
-      }
-    }
+    final socketService = Provider.of<SocketServices>(context);
 
     return Container(
       margin: const EdgeInsets.only(top: 40),
@@ -104,7 +99,16 @@ class __FormState extends State<_Form> {
                   emailCtrl.text.trim(), 
                   passCtrl.text.trim()
                 );
-                _verificacion(registerOk);
+                
+                if (registerOk == true) {
+                  socketService.connect();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacementNamed(context, 'users');
+                } else {
+                  // ignore: use_build_context_synchronously
+                  mostarAlerta(context, 'Registro incorrecto', registerOk ?? '');      
+                }
+
               }
           )
 

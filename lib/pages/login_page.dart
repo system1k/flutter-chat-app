@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:chat_app/widgets/widgets.dart';
 import 'package:chat_app/helpers/mostar_alerta.dart';
 import 'package:chat_app/services/auth_services.dart';
+import 'package:chat_app/services/socket_services.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -55,9 +56,11 @@ class __FormState extends State<_Form> {
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthServices>(context);
+    final socketService = Provider.of<SocketServices>(context);
 
     void _verificacion(bool value) {
       if (value) {
+        socketService.connect();
         Navigator.pushReplacementNamed(context, 'users');
       } else {
         mostarAlerta(context, 'Login incorrecto', 'Revise sus credenciales de acceso');
