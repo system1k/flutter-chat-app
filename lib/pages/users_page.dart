@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:chat_app/models/user.dart';
 
 import 'package:chat_app/services/usuarios_services.dart';
+import 'package:chat_app/services/chat_services.dart';
 import 'package:chat_app/services/auth_services.dart';
 import 'package:chat_app/services/socket_services.dart';
 
@@ -117,6 +118,11 @@ class _UsersListTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(100)
         ),
       ),
+      onTap: (){
+        final chatServices = Provider.of<ChatServices>(context, listen: false);
+        chatServices.usuarioPara = users;
+        Navigator.pushNamed(context, 'chat');
+      },
     );
   }
 
